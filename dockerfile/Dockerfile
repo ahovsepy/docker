@@ -48,5 +48,5 @@ ENV RHQ_SERVER_JAVA_EXE_FILE_PATH /usr/bin/java
 
 ENTRYPOINT  expect -c ' spawn su -l postgres -c " pg_ctl start " ; expect -re   "pg_log" {send \"\r\"; exp_continue } }' ;\
 su root  -c ' ./opt/rhq-server-4.9.0/bin/rhqctl install  --agent-preference="127.0.0.1" ';\
-/bin/bash
 
+EXPOSE 7080
