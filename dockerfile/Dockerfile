@@ -46,7 +46,13 @@ RUN cp -u rhq-server.properties  /opt/rhq-server-4.9.0/bin/rhq-server.properties
 
 ENV RHQ_SERVER_JAVA_EXE_FILE_PATH /usr/bin/java
 
-ENTRYPOINT  expect -c ' spawn su -l postgres -c " pg_ctl start " ; expect -re   "pg_log" {send \"\r\"; exp_continue } }' ;\
+RUN  expect -c ' spawn su -l postgres -c " pg_ctl start " ; expect -re   "pg_log" {send \"\r\"; exp_continue } }' ;\
 su root  -c ' ./opt/rhq-server-4.9.0/bin/rhqctl install  --agent-preference="127.0.0.1" ';
 
 EXPOSE 7080
+
+ENTRYPOINT  expect -c ' spawn su -l postgres -c " pg_ctl start " ; expect -re   "pg_log" {send \"\r\"; exp_continue } }' ;\
+su root -c './opt/rhq-server-4.9.0/bin/rhqctl istart --storage --server --agent' ;\
+su root -c 'tail -f /opt/rhq-server-4.9.0/logs/server.log';
+
+CMD []
